@@ -1,85 +1,78 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <div>
+    <label>
+      姓名:
+      <input type="text" v-model="username">
+      <br>
+      薪资:
+      <input type="number" v-model="salary">
+      <br>
+      <button v-on:click="addSalary()">提交</button>
+    </label>
+  </div>
+  <hr>
+  <button v-on:click="changShowInfo">展开信息表</button>
+  <div id="userinfo" v-if="showInfo">
+    <h1>个人信息表</h1>
+    <label>
+      年龄:
+      <input type="number" v-model="userinfo.age">
+      <br>
+      性别:
+      <input type="radio" value="1" v-model="userinfo.sex">男
+      <input type="radio" value="0" v-model="userinfo.sex"> 女
+      <br>
+      岗位:
+      <select v-model="userinfo.job">
+        <option value="dev">开发</option>
+        <option value="test">测试</option>
+      </select>
+      <br>
+      技术:
+      <span v-for="skill in userinfo.skills" :key="skill">{{ skill }}</span>
+      <hr>
+      添加技术:
+      <input type="text" v-model="newSkills">
+     <button v-on:click="addNewSkill">添加技能</button>
+      <hr>
+      个人信息总汇:
+      <span>{{ userinfo }}</span>
+    </label>
+  </div>
 </template>
 
+<script>
+  export default{
+    data(){
+      return{
+        username: "Kaguya",
+        salary: 99599,
+        userinfo: {
+          age: 17,
+          sex: 1,
+          job: "dev",
+          skills: ['java', 'vue']
+        },
+        newSkills: '',
+        showInfo: false,
+      }
+    },
+    methods:{
+      addSalary() {
+        this.salary += 1000
+
+      },
+      addNewSkill() {
+        this.userinfo.skills.push(this.newSkills);
+      },
+      changShowInfo() {
+        this.showInfo = !this.showInfo;
+      },
+    }
+  }
+</script>
+
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
 </style>
