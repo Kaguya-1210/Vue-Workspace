@@ -39,3 +39,10 @@ window.ResizeObserver = class ResizeObserver extends _ResizeObserver {
         super(callback);
     }
 }
+
+//7.定义获取登录用户信息的全局方法
+window.getUser = ()=>{
+    //如果获取到了用户数据,转为JS对象
+    //如果没有获取到用户数据''转为布尔是false,值为null
+    return localStorage.user ? JSON.parse(localStorage.user) : null
+}

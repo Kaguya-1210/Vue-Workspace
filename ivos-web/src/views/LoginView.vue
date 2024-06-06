@@ -62,6 +62,7 @@
 import {ref} from "vue";
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import router from "@/router";
 
 const user = ref({username:'', password: ''});
 const login =()=>{
@@ -69,6 +70,9 @@ const login =()=>{
       .then((response)=>{
         if (response.data.code === 2000) {
           ElMessage.success("登录成功");
+
+          localStorage.setItem('user', JSON.stringify(response.data.data));
+          router.push("/");
         }else {
           ElMessage.error(response.data.msg);
         }
