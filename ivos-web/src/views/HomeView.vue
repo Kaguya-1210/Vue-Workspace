@@ -15,9 +15,9 @@
       >
 
 
-        <el-row style="padding-top: 10px">
-          <el-col span="2"></el-col>
-          <el-col span="7" style="padding-left:16px;">
+        <el-row style="padding-top:10px;">
+          <el-col :span="2"></el-col>
+          <el-col :span="7" style="padding-left:7px;">
             <el-avatar src="/imgs/admin/logo.png" style="width: 35px;height: 35px;"></el-avatar>
           </el-col>
 
@@ -26,8 +26,9 @@
               智慧车辆
             </router-link>
           </el-col>
+        </el-row>
 
-          <el-sub-menu index="1" style="width: 30vh">
+          <el-sub-menu index="1">
             <template #title>
               <el-icon style="font-size:19px;">
                 <User/>
@@ -37,7 +38,7 @@
             <el-menu-item index="/user">用户管理</el-menu-item>
           </el-sub-menu>
 
-          <el-sub-menu index="2" style="width: 30vh">
+          <el-sub-menu index="2">
             <template #title>
               <el-icon style="font-size: 19px">
                 <Van/>
@@ -47,7 +48,7 @@
             <el-menu-item index="/vehicle">基本信息</el-menu-item>
           </el-sub-menu>
 
-          <el-sub-menu index="3" style="width: 30vh;">
+          <el-sub-menu index="3">
             <template #title>
               <el-icon style="font-size: 19px">
                 <Place/>
@@ -60,7 +61,7 @@
           </el-sub-menu>
 
 
-          <el-sub-menu index="4" style="width: 30vh;">
+          <el-sub-menu index="4">
             <template #title>
               <el-icon style="font-size:19px;">
                 <Location/>
@@ -71,7 +72,7 @@
           </el-sub-menu>
 
 
-          <el-sub-menu index="5" style="width: 30vh;">
+          <el-sub-menu index="5">
             <template #title>
               <el-icon style="font-size:19px;">
                 <MessageBox/>
@@ -80,14 +81,37 @@
             </template>
             <el-menu-item index="/dict">字典管理</el-menu-item>
           </el-sub-menu>
-        </el-row>
       </el-menu>
     </div>
     <!-- 右侧主体内容 永远占满剩余宽度 -->
     <div :style="{width:(isCollapse ? 'calc(100% - 64px)' : 'calc(100% - 208px)')}">
-      <router-view>
+      <!-- 右侧顶部条 -->
 
-      </router-view>
+      <el-header style="padding-top:22px;height:10vh;">
+        <!--折叠图标与退出登录-->
+
+        <el-row :gutter="10">
+          <el-col :span="18">
+            <el-icon style="font-size:20px;" @click="changeCollapsed">
+              <Expand/>
+            </el-icon>
+          </el-col>
+          <el-col :span="6" style="position: relative;">
+            <el-dropdown trigger="click" style="position:absolute;right:20px;">
+              <span style="font-size:19px;font-weight: bold;">
+                {{ user.username }}
+                <el-icon><arrow-down/></el-icon>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </el-col>
+        </el-row>
+      </el-header>
+      <router-view/>
     </div>
   </div>
 </template>
@@ -96,8 +120,12 @@
 <script setup>
 import {ref} from "vue";
 
-const User = ref(getUser());
+const user = ref(getUser());
 
 const isCollapse = ref(false);
+
+const changeCollapsed = () => {
+  isCollapse.value = !isCollapse.value;
+}
 
 </script>
