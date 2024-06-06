@@ -1,4 +1,4 @@
-package re.kaguya.ivos.response;
+package re.kaguya.ivos.base.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

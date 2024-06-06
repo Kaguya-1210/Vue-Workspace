@@ -1,4 +1,4 @@
-package re.kaguya.ivos.exception;
+package re.kaguya.ivos.base.exception;
 
 
 
@@ -6,8 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import re.kaguya.ivos.response.JsonResult;
-import re.kaguya.ivos.response.StatusCode;
+import re.kaguya.ivos.base.response.JsonResult;
+import re.kaguya.ivos.base.response.StatusCode;
 
 import javax.validation.ConstraintViolationException;
 
@@ -28,6 +28,12 @@ public class GlobalExceptionHandler {
       2.如果没有对应的异常处理方法,则会找父类的异常处理方法;
       3.如果没有父类的异常处理方法,则会走SpringMVC自己的异常处理机制;
      */
+
+    @ExceptionHandler
+    public JsonResult doHandleServiceException(ServiceException ex) {
+        log.error("RuntimeException: " + ex.getStatusCode().getMsg());
+        return new JsonResult(ex.getStatusCode());
+    }
 
     /**
      * 第1个异常处理方法:IllegalArgumentException

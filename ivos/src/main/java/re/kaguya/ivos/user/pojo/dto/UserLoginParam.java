@@ -1,4 +1,4 @@
-package re.kaguya.ivos.pojo.dto;
+package re.kaguya.ivos.user.pojo.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
