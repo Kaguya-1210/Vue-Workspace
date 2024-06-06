@@ -35,13 +35,13 @@
                 <h3 style="text-align: center">用户登录</h3>
                 <el-form label-position="top">
                   <el-form-item label="用户名">
-                    <el-input placeholder="请输入用户名"></el-input>
+                    <el-input placeholder="请输入用户名" v-model="user.username"></el-input>
                   </el-form-item>
                   <el-form-item label="密码">
-                    <el-input placeholder="请输入密码" type="password"></el-input>
+                    <el-input placeholder="请输入密码" type="password" v-model="user.password"></el-input>
                   </el-form-item>
                   <el-form-item>
-                    <el-button type="primary" style="width: 100%;">登录</el-button>
+                    <el-button type="primary" style="width: 100%;" @click="login()">登录</el-button>
                   </el-form-item>
                 </el-form>
                 <div style="color: #666; text-align: center;font-size: 14px;padding: 10px 0">
@@ -57,8 +57,18 @@
     </div>
 </template>
 
-<script setup>
 
+<script setup>
+import {ref} from "vue";
+import axios from "axios";
+
+const user = ref({username:'', password: ''});
+const login =()=>{
+  axios.post("http://localhost:8080/v1/user/login", user.value)
+      .then((response)=>{
+        console.log(response.data);
+      });
+}
 </script>
 
 <style scoped>
