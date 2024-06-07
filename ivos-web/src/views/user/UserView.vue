@@ -4,6 +4,9 @@
   <div style="height: 6vh;background-color: #fff;padding: 10px 20px">
     <span style="font-size: 20px;line-height: 60px">用户管理</span>
     <el-button @click="dialogVisible=true" type="primary" style="float: right; margin-top: 10px">新建用户</el-button>
+
+
+    <!-- 新建/编辑用户弹窗 -->
     <el-dialog :title="dialogTitle" v-model="dialogVisible" style="width: 1000px;padding: 40px">
 
       <el-form label-position="top" label-width="80px">
@@ -16,7 +19,7 @@
 
             <el-form-item label="用户名">
 
-              <el-input placeholder="请输入用户名"></el-input>
+              <el-input placeholder="请输入用户名" v-model="saveUserFrom.username"></el-input>
 
             </el-form-item>
 
@@ -26,7 +29,7 @@
 
             <el-form-item label="手机号">
 
-              <el-input placeholder="请输入手机号"></el-input>
+              <el-input placeholder="请输入手机号" v-model="saveUserFrom.phone"></el-input>
 
             </el-form-item>
 
@@ -40,7 +43,7 @@
 
             <el-form-item label="邮箱">
 
-              <el-input placeholder="请输入邮箱"></el-input>
+              <el-input placeholder="请输入邮箱" v-model="saveUserFrom.email"></el-input>
 
             </el-form-item>
 
@@ -50,7 +53,7 @@
 
             <el-form-item label="年龄">
 
-              <el-input placeholder="请输入年龄"></el-input>
+              <el-input placeholder="请输入年龄" v-model="saveUserFrom.age"></el-input>
 
             </el-form-item>
 
@@ -61,43 +64,53 @@
 
 
         <el-row :gutter="30">
+
+
           <el-col :span="6">
             <el-form-item label="职级">
-              <el-select placeholder="请选择">
-                <el-option v-for="item in levelOptions" :label="item.label"></el-option>
+              <el-select placeholder="请选择" v-model="saveUserFrom.level">
+                <el-option v-for="item in levelOptions"
+                           :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
+
+
           <el-col :span="6">
             <el-form-item label="直属领导">
-              <el-select placeholder="请选择">
-                <el-option label="shaoyun" value="1"></el-option>
-                <el-option label="mike" value="2"></el-option>
+              <el-select placeholder="请选择" v-model="saveUserFrom.parentId">
+                <el-option v-for="item in leaderOptions" :label="item.username" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
+
+
           <el-col :span="4">
             <el-form-item label="性别">
-              <el-radio-group>
+              <el-radio-group v-model="saveUserFrom.gender">
                 <el-radio label="男" border value="1" style="margin: 0;"></el-radio>
                 <el-radio label="女" border value="0"></el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
+
+
           <el-col :span="6">
             <el-form-item label="用户状态">
-              <el-radio-group>
+              <el-radio-group v-model="saveUserFrom.status">
                 <el-radio label="启用" border value="1" style="margin: 0;"></el-radio>
                 <el-radio label="禁用" border value="0"></el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
+
+
         </el-row>
       </el-form>
 
       <template #footer>
         <el-button>取消</el-button>
-        <el-button type="primary">保存</el-button>
+        <el-button type="primary" @click="saveUser">保存</el-button>
       </template>
 
 
@@ -108,6 +121,8 @@
 <script setup>
 
 import {ref} from "vue";
+import axios from "axios";
+import {ElMessage} from "element-plus";
 
 // 控制弹窗出现;
 const dialogVisible = ref(false);
@@ -132,6 +147,29 @@ const leaderOptions = ref(
     ]
 );
 
+
+const saveUserFrom = ref({
+      username: '',
+      phone: '',
+      email: '',
+      age: '',
+      level: '',
+      parentId: '',
+      gender: '',
+      status: '',
+    }
+);
+
+const saveUser = () =>{
+  console.log(saveUserFrom.value);
+  axios.post(BASE_URL + '/v1/user/save', saveUserFrom.value).then((response) => {
+    if (response.data.code == 2000) {
+      ElMessage.success('保存成功');
+    }else {
+      ElMessage.error(response.data.msg);
+    }
+  });
+}
 
 </script>
 

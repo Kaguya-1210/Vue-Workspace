@@ -10,6 +10,14 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 //5.1修改elementPlus默认中文
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
+// 8.1配置根路径
+
+const BASE_URL = 'http://localhost:8080';
+// win里配置的都是全局内容，可以在任意script中使用
+window.BASE_URL = BASE_URL;
+app.config.globalProperties.BASER_URL = BASE_URL;
+
+
 const app = createApp(App)
 //4.遍历ElementPlusIconsVue对象中的所有图标组件并注册到app中
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

@@ -66,14 +66,14 @@ import router from "@/router";
 
 const user = ref({username:'', password: ''});
 const login =()=>{
-  axios.post("http://localhost:8080/v1/user/login", user.value)
-      .then((response)=>{
+  axios.post(BASE_URL + "/v1/user/login", user.value)
+      .then((response) => {
         if (response.data.code === 2000) {
           ElMessage.success("登录成功");
 
           localStorage.setItem('user', JSON.stringify(response.data.data));
           router.push("/");
-        }else {
+        } else {
           ElMessage.error(response.data.msg);
         }
         console.log(response.data);
