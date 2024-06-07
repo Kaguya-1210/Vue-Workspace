@@ -105,7 +105,7 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item>退出登录</el-dropdown-item>
+                  <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -113,7 +113,7 @@
         </el-row>
 
 <!--        面包屑导航-->
-        <el-breadcrumb separator="/">
+        <el-breadcrumb separator="/" style="position:relative;top:20px">
           <el-breadcrumb-item>首页</el-breadcrumb-item>
           <el-breadcrumb-item v-for="item in breadCrumb">{{item}}</el-breadcrumb-item>
         </el-breadcrumb>
@@ -126,6 +126,7 @@
 
 <script setup>
 import {ref} from "vue";
+import router from "@/router";
 
 const user = ref(getUser());
 
@@ -138,7 +139,8 @@ const changeCollapsed = () => {
 
 //设置变量维护面包屑
 
-const breadCrumb = ref();
+const breadCrumb = ref(
+    JSON.parse(localStorage.getItem('breadcrumb') || '["用户管理","用户列表"]'));
 
 let map = {
   "/user": ["用户管理", "用户列表"],
@@ -153,5 +155,15 @@ let map = {
 //选择菜单项时触发
 const selectMenu = (index)=>{
   breadCrumb.value = map[index];
+  localStorage.setItem("breadcrumb", JSON.stringify(breadCrumb.value));
+}
+
+//退出登录
+const logout=()=>{
+  if (confirm("你确定要退出吗?")) {
+    localStorage.removeItem('user');
+    localStorage.removeItem('breadcrumb');
+    router.push("/login");
+  }
 }
 </script>
