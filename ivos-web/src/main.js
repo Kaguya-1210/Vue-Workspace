@@ -46,3 +46,4 @@ window.getUser = ()=>{
     //如果没有获取到用户数据''转为布尔是false,值为null
     return localStorage.user ? JSON.parse(localStorage.user) : null
 }
+

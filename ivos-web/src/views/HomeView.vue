@@ -12,6 +12,7 @@
                :collapse-transition="false"
                router
                unique-opened
+               @select="selectMenu"
       >
 
 
@@ -110,6 +111,12 @@
             </el-dropdown>
           </el-col>
         </el-row>
+
+<!--        面包屑导航-->
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item>首页</el-breadcrumb-item>
+          <el-breadcrumb-item v-for="item in breadCrumb">{{item}}</el-breadcrumb-item>
+        </el-breadcrumb>
       </el-header>
       <router-view/>
     </div>
@@ -128,4 +135,23 @@ const changeCollapsed = () => {
   isCollapse.value = !isCollapse.value;
 }
 
+
+//设置变量维护面包屑
+
+const breadCrumb = ref();
+
+let map = {
+  "/user": ["用户管理", "用户列表"],
+  "/vehicle": ["车辆管理", "基本信息"],
+  "/geofence": ["电子围栏", "围栏管理"],
+  "/application": ["调度管理", "申请列表"],
+  "/audit": ["调度管理", "调度审核"],
+  "/distribute": ["调度管理", "车辆分配"],
+  "/dict": ["数据字典", "字典管理"],
+}
+
+//选择菜单项时触发
+const selectMenu = (index)=>{
+  breadCrumb.value = map[index];
+}
 </script>
