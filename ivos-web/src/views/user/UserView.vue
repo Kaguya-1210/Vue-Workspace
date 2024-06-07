@@ -109,8 +109,8 @@
       </el-form>
 
       <template #footer>
-        <el-button>取消</el-button>
-        <el-button type="primary" @click="saveUser">保存</el-button>
+        <el-button @click="dialogVisible=false">取消</el-button>
+        <el-button type="primary" @click="saveUser" >保存</el-button>
       </template>
 
 
@@ -143,7 +143,7 @@ const levelOptions = ref([
 const leaderOptions = ref(
     [
       {username: 'shaoyun', id: '1',},
-      {username: 'mike', id: '2',}
+      {username: 'Kaguya', id: '113',}
     ]
 );
 
@@ -165,6 +165,8 @@ const saveUser = () =>{
   axios.post(BASE_URL + '/v1/user/save', saveUserFrom.value).then((response) => {
     if (response.data.code == 2000) {
       ElMessage.success('保存成功');
+      dialogVisible.value = false;
+      saveUserFrom.value = {};
     }else {
       ElMessage.error(response.data.msg);
     }

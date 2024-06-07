@@ -8,4 +8,9 @@
         FROM user
         WHERE username = #{username}
     </select>
+    <insert id="insert">
+        INSERT INTO user(username, password, email, phone, age, gender, create_time, status, level, parent_id)
+        VALUES (#{username}, #{password}, #{email}, #{phone}, #{age}, #{gender}, #{createTime}, #{status}, #{level},
+                #{parentId});
+    </insert>
 </mapper>
