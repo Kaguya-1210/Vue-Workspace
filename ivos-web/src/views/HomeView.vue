@@ -118,7 +118,10 @@
           <el-breadcrumb-item v-for="item in breadCrumb">{{item}}</el-breadcrumb-item>
         </el-breadcrumb>
       </el-header>
-      <router-view/>
+<!--      右侧 除顶部条与面包屑的部分都是可变区域，在对应的子级页面里写-->
+      <el-main >
+        <router-view/>
+      </el-main>
     </div>
   </div>
 </template>
@@ -163,7 +166,8 @@ const logout=()=>{
   if (confirm("你确定要退出吗?")) {
     localStorage.removeItem('user');
     localStorage.removeItem('breadcrumb');
-    router.push("/login");
+    window.location.href = "/login";
+    user.value = '';
   }
 }
 </script>
