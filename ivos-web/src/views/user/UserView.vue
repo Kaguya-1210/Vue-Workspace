@@ -7,7 +7,10 @@
 
 
     <!-- 新建/编辑用户弹窗 -->
-    <el-dialog :title="dialogTitle" v-model="dialogVisible" style="width: 1000px;padding: 40px">
+<!--    before-close="handleClose"确认是否关闭窗口-->
+    <el-dialog :title="dialogTitle" v-model="dialogVisible"
+               :before-close="handleClose"
+               style="width: 1000px;padding: 40px">
 
       <el-form label-position="top" label-width="80px">
 
@@ -109,7 +112,7 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="dialogVisible=false">取消</el-button>
+        <el-button @click="handleClose">取消</el-button>
         <el-button type="primary" @click="saveUser" >保存</el-button>
       </template>
 
@@ -171,6 +174,14 @@ const saveUser = () =>{
       ElMessage.error(response.data.msg);
     }
   });
+}
+
+
+const handleClose= ()=>{
+  if (confirm("你确定要退出编辑吗?")) {
+    dialogVisible.value = false;
+    saveUserFrom.value = {};
+  }
 }
 
 </script>
