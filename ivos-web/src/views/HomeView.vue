@@ -6,7 +6,7 @@
     <div :style="{width:( isCollapse ? '64px' : '208px' )}">
       <el-menu background-color="#3C82F5"
                text-color="#fff"
-               style="width:100%;height:100%;min-height:100vh;"
+               style="width:100%;height:100%;"
                active-text-color="#ff0"
                :collapse="isCollapse"
                :collapse-transition="false"
@@ -84,11 +84,12 @@
           </el-sub-menu>
       </el-menu>
     </div>
+
+
     <!-- 右侧主体内容 永远占满剩余宽度 -->
     <div :style="{width:(isCollapse ? 'calc(100% - 64px)' : 'calc(100% - 208px)')}">
       <!-- 右侧顶部条 -->
-
-      <el-header style="padding-top:22px;height:10vh;">
+      <el-header style="padding-top:22px;height:10vh;background-color: #fff">
         <!--折叠图标与退出登录-->
 
         <el-row :gutter="10">
@@ -119,7 +120,7 @@
         </el-breadcrumb>
       </el-header>
 <!--      右侧 除顶部条与面包屑的部分都是可变区域，在对应的子级页面里写-->
-      <el-main >
+      <el-main style="padding: 0;height: 90vh;overflow-y: auto">
         <router-view/>
       </el-main>
     </div>
