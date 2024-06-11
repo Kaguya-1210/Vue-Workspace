@@ -13,4 +13,29 @@
         VALUES (#{username}, #{password}, #{email}, #{phone}, #{age}, #{gender}, #{createTime}, #{status}, #{level},
                 #{parentId});
     </insert>
+
+    <select id="selectUser" resultType="re.kaguya.ivos.user.pojo.vo.UserVo">
+        SELECT id,username,password,email,phone,age,gender,create_time,update_time,status,level,parent_id
+        FROM user
+        <where>
+            <if test="username!=null and username!=''">username LIKE CONCAT('%',#{username},'%')</if>;
+
+            <if test="id!=null and id!=''">
+                AND id = #{id}
+            </if>
+
+            <if test="status!=null and status!=''">
+                AND status = #{status}
+            </if>
+
+            <if test="parent_id!=null and parent_id!=''">
+                AND parent_id = #{parent_id}
+            </if>
+
+            <if test="level!=null and level!=''">
+                AND level = #{level}
+            </if>
+
+        </where>
+    </select>
 </mapper>

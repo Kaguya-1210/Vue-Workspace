@@ -8,12 +8,14 @@ import re.kaguya.ivos.base.exception.ServiceException;
 import re.kaguya.ivos.base.response.StatusCode;
 import re.kaguya.ivos.user.mapper.UserMapper;
 import re.kaguya.ivos.user.pojo.dto.UserLoginParam;
+import re.kaguya.ivos.user.pojo.dto.UserQuery;
 import re.kaguya.ivos.user.pojo.dto.UserSaveParam;
 import re.kaguya.ivos.user.pojo.entity.User;
 import re.kaguya.ivos.user.pojo.vo.UserVo;
 import re.kaguya.ivos.user.service.UserService;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -21,6 +23,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
+
+
+    @Override
+    public List<UserVo> selectUser(UserQuery userQuery) {
+        return userMapper.selectUser(userQuery);
+    }
 
     @Override
     public void saveUser(UserSaveParam userSaveParam) {
