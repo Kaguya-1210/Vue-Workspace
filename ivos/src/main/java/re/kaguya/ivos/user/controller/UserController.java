@@ -5,19 +5,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import re.kaguya.ivos.user.pojo.dto.UserLoginParam;
 import re.kaguya.ivos.base.response.JsonResult;
 import re.kaguya.ivos.user.mapper.UserMapper;
+import re.kaguya.ivos.user.pojo.dto.UserQuery;
 import re.kaguya.ivos.user.pojo.dto.UserSaveParam;
 import re.kaguya.ivos.user.pojo.entity.User;
 import re.kaguya.ivos.user.pojo.vo.UserVo;
 import re.kaguya.ivos.user.service.UserService;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/user")
@@ -38,9 +37,15 @@ public class UserController {
 
     @PostMapping("/save")
     @Operation(summary = "添加用户")
-    public JsonResult saveUser(@RequestBody UserSaveParam userSaveParam) {
+    public JsonResult saveUser(UserSaveParam userSaveParam) {
         log.debug(userSaveParam.toString());
         userService.saveUser(userSaveParam);
+        return JsonResult.ok();
+    }
+
+    @GetMapping("/select")
+    public JsonResult selectUser(UserQuery userQuery) {
+        List<UserVo> userVos = userService.selectUser(userQuery);
         return JsonResult.ok();
     }
 }

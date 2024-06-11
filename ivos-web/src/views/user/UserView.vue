@@ -4,7 +4,7 @@
   <div style="height: 6vh;background-color: #fff;padding: 10px 20px">
     <span style="font-size: 20px;line-height: 60px">用户管理</span>
     <el-button @click="dialogVisible=true" type="primary" style="float: right; margin-top: 10px">新建用户</el-button>
-
+  </div>
 
     <!-- 新建/编辑用户弹窗 -->
 <!--    before-close="handleClose"确认是否关闭窗口-->
@@ -118,14 +118,74 @@
 
 
     </el-dialog>
-  </div>
+
+
+
+  <el-card style="margin: 20px;height: 70px">
+
+    <el-form :inline="true">
+
+      <el-form-item label="用户搜索">
+        <el-input placeholder="请输入用户名" style="width: 220px" v-model="searchUserFrom.username"></el-input>
+      </el-form-item>
+
+      <el-form-item label="用户状态">
+
+        <el-select placeholder="请选择用户状态" style="width: 290px" v-model="searchUserFrom.status">
+          <el-option label="启用" value="1"></el-option>
+          <el-option label="禁用" value="0"></el-option>
+        </el-select>
+
+      </el-form-item>
+
+      <el-form-item>
+        <el-button>重置</el-button>
+        <el-button type="primary" @click="loadUser">查询</el-button>
+      </el-form-item>
+    </el-form>
+
+  </el-card>
+
+
+<!--  用户信息表-->
+  <el-card style="margin: 20px">
+
+    <el-table :data="userArr">
+
+      <el-table-column type="index" label="编号" width="80" align="center"></el-table-column>
+      <el-table-column prop="username" label="用户名" align="center"></el-table-column>
+      <el-table-column prop="phone" label="手机号" align="center"></el-table-column>
+      <el-table-column prop="createTime" label="加入时间" align="center"></el-table-column>
+      <el-table-column prop="status" label="用户状态" align="center">
+        <template #default="scope">
+          <el-switch active-value="1" in inactive-value="0" v-model="scope.row.status"></el-switch>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="操作" align="center">
+        <template #default="scope">
+          <el-button type="primary" size="small" link>密码重置</el-button>
+          <el-button type="primary" size="small" link>编辑</el-button>
+          <el-button type="primary" size="small" link>删除</el-button>
+
+        </template>
+
+
+      </el-table-column>
+
+    </el-table>
+
+  </el-card>
+
+
 </template>
 
 <script setup>
 
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import qs from "qs";
 
 // 控制弹窗出现;
 const dialogVisible = ref(false);
@@ -165,7 +225,8 @@ const saveUserFrom = ref({
 
 const saveUser = () =>{
   console.log(saveUserFrom.value);
-  axios.post(BASE_URL + '/v1/user/save', saveUserFrom.value).then((response) => {
+  let data = qs.stringify(saveUserFrom.value);
+  axios.post(BASE_URL + '/v1/user/save', data).then((response) => {
     if (response.data.code == 2000) {
       ElMessage.success('保存成功');
       dialogVisible.value = false;
@@ -183,6 +244,38 @@ const handleClose= ()=>{
     saveUserFrom.value = {};
   }
 }
+
+// 定义数组来保存用户列表数据
+
+const userArr = ref([
+      {username: 'ss', phone: '1231414', createTime: '2020-02-02', status: '1'},
+      {username: '324s', phone: '1234534', createTime: '2020-05-02', status: '0'}
+    ]
+);
+
+// 用来保存查询条件
+const searchUserFrom = ref(
+    {username:'', status: ''}
+
+)
+
+// 定义加载用户数据的方法
+const loadUser=()=>{
+  let data = qs.stringify(searchUserFrom.value);
+  console.log(data);
+
+  axios.get(BASE_URL+'/v1/user/select?'+data).then((response)=>{
+    if (response.data.code === 2000) {
+      userArr.value = response.data.data;
+    }else {
+      ElMessage.error(response.data.msg);
+    }
+  })
+}
+
+onMounted(()=>{
+  loadUser();
+})
 
 </script>
 
